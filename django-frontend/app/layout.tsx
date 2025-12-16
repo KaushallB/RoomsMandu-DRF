@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from './components/navbar/Navbar';
+import Modal from "./components/modals/Modal";
 
 
 const geistSans = Geist({
@@ -24,6 +25,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const contents = (
+        <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, temporibus iste iure quae minima hic nostrum voluptatum aliquam veritatis ut saepe asperiores amet soluta minus voluptatem dolorem quibusdam ullam commodi.</p>
+    )
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -32,6 +36,12 @@ export default function RootLayout({
         <div className="pt-45">
         {children}
         </div>
+
+        <Modal 
+          label="Modal Test"
+          content={contents}
+          isOpen={false} 
+          />
       </body>
     </html>
   );
