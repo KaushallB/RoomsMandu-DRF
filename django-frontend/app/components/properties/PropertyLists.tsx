@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import PropertyListItem from './PropertyListItem';
+import apiService from '@/app/services/apiService';
 
 export type PropertyType = {
     id: string;
@@ -18,21 +19,26 @@ const PropertyList = () =>{
     const [properties, setProperties] = useState<PropertyType[]>([]);
 
     const getProperties = async () => {
-        const url='http://localhost:8000/api/v1/properties/';
+        const url='/api/v1/properties/';
 
-        await fetch(url, {
-            method: 'GET',
-        })
-            .then(response => response.json())
-            .then ((json) => {
-                console.log('json',json);
+        const tmpProperties = await apiService.get(url);
 
-                setProperties(json.data)
-            })
-            .catch((error) => {
-                console.log('error:',error);
-            })
+        setProperties(tmpProperties.data);
     };
+
+    //     await fetch(url, {
+    //         method: 'GET',
+    //     })
+    //         .then(response => response.json())
+    //         .then ((json) => {
+    //             console.log('json',json);
+
+    //             setProperties(json.data)
+    //         })
+    //         .catch((error) => {
+    //             console.log('error:',error);
+    //         })
+    // };
 
     useEffect(()=>{
         getProperties();
