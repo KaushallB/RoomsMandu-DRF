@@ -25,8 +25,8 @@ const apiService= {
         })
     },
 
-    post: async function(url: string, data:any): Promise<any> {
-        console.log('post', url ,data);
+    post: async function(url:string, data:any): Promise<any> {
+        console.log('POST', url, data);
 
         return new Promise((resolve, reject) => {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`,{
@@ -37,15 +37,25 @@ const apiService= {
                     'Content-Type': 'application/json'
                 }
             })
-                .then(response => response.json())
-                .then((json)=>{
-                    console.log('Response:', json);
-
+                .then(async (response) => {
+                    const text = await response.text();
+                    console.log('Response status:', response.status);
+                    console.log('Response text:', text);
+                    
+                    let json;
+                    try {
+                        json = JSON.parse(text);
+                    } catch {
+                        json = { error: text };
+                    }
+                    
+                    console.log('Parsed JSON:', json);
                     resolve(json);
                 })
-                .catch((error => {
+                .catch((error) => {
+                    console.error('Fetch error:', error);
                     reject(error);
-                }))
+                })
         })
     }
 
