@@ -40,14 +40,22 @@ const UserNav: React.FC<UserNavgProps> = ({
                     { userId ? (
                         <>
                             <MenuLink 
-                                label="My properties"
+                                label="My Properties"
                                 onClick={() => {
                                     setIsOpen(false);
                                     router.push('/myproperties');
                                 }}
                                 />
 
-                            <LogoutButton />
+                                <MenuLink 
+                                label="My Reservations"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    router.push('/myreservations');
+                                }}
+                                />
+
+                                <LogoutButton />
                         </>
                     
                     ) : (

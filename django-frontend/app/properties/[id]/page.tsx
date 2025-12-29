@@ -44,7 +44,7 @@ const PropertyDetails = ({params}: {params: Promise<{id: string}>}) => {
         <main className="max-w-1500px mx-auto px-6 pb-6">
             <div className="w-full h-[80vh] mb-4 overflow-hidden rounded-xl relative">
                 <Image fill
-                    src='/house1.jpg'
+                    src={property.image_url}
                     className="object-cover w-full h-full"
                     alt="House1"
                 />
