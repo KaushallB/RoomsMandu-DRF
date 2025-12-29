@@ -112,9 +112,17 @@ const AddPropertyModal = () => {
                         setCategory={(category) => setCategory(category)}
                         />
 
+                    {!dataCategory && (
+                        <p className='text-red-500 text-sm mt-2'>Please select a category</p>
+                    )}
+
                     <CustomButton 
                         label='Next'
-                        onClick={() => setCurrentStep(2)}
+                        onClick={() => {
+                            if (dataCategory) {
+                                setCurrentStep(2);
+                            }
+                        }}
                     />
                 </>
             ) : currentStep == 2 ? (
@@ -143,6 +151,10 @@ const AddPropertyModal = () => {
 
                     </div>
 
+                    {(!dataTitle || !dataDescription) && (
+                        <p className='text-red-500 text-sm mb-2'>Please fill all fields</p>
+                    )}
+
                     <CustomButton
                         label='Previous'
                         className='mb-2 bg-black hover:bg-gray-800'
@@ -151,7 +163,11 @@ const AddPropertyModal = () => {
 
                     <CustomButton 
                         label='Next'
-                        onClick={() => setCurrentStep(3)}
+                        onClick={() => {
+                            if (dataTitle && dataDescription) {
+                                setCurrentStep(3);
+                            }
+                        }}
                     />
                 </>
             ) : currentStep == 3 ? (
@@ -201,6 +217,10 @@ const AddPropertyModal = () => {
                         </div>
                     </div>
 
+                {!dataPrice && (
+                    <p className='text-red-500 text-sm mb-2'>Please enter price per month</p>
+                )}
+
                 <CustomButton
                         label='Previous'
                         className='mb-2 bg-black hover:bg-gray-800'
@@ -209,7 +229,11 @@ const AddPropertyModal = () => {
 
                     <CustomButton 
                         label='Next'
-                        onClick={() => setCurrentStep(4)}
+                        onClick={() => {
+                            if (dataPrice) {
+                                setCurrentStep(4);
+                            }
+                        }}
                     />
                 
                 </>
@@ -227,6 +251,10 @@ const AddPropertyModal = () => {
 
                 </div>
 
+                {!dataDistrict && (
+                    <p className='text-red-500 text-sm mb-2'>Please select a district</p>
+                )}
+
                 <CustomButton
                         label='Previous'
                         className='mb-2 bg-black hover:bg-gray-800'
@@ -235,7 +263,11 @@ const AddPropertyModal = () => {
 
                 <CustomButton 
                         label='Next'
-                        onClick={() => setCurrentStep(5)}
+                        onClick={() => {
+                            if (dataDistrict) {
+                                setCurrentStep(5);
+                            }
+                        }}
                     />
             
             </>
@@ -245,13 +277,20 @@ const AddPropertyModal = () => {
                 <h2 className='mb-6 text-2xl'> Image </h2>
 
                 <div className='pt-3 pb-6 space-y-4'>
-                    <div className='py-4 px-6 bg-gray-600 text-white rounded-xl'>
-                    <input
+                    <label className='block py-4 px-6 bg-gray-200 text-gray-700 rounded-xl cursor-pointer hover:bg-gray-300 transition'>
+                        <input
                             type="file"
                             accept='image/*' 
                             onChange={setImage}
-                    />
-                    </div>
+                            className='hidden'
+                        />
+                        <span className='inline-block py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition'>
+                            Choose file
+                        </span>
+                        <span className='ml-3'>
+                            {dataImage ? dataImage.name : 'No file chosen'}
+                        </span>
+                    </label>
 
                         {dataImage && (
                             <div className='w-[200px] h-[150px] relative'>

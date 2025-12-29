@@ -45,6 +45,8 @@ const apiService= {
         console.log('POST', url, data);
 
         const token = getTokenFromCookies();
+        console.log('Token found:', token ? 'Yes' : 'No');
+        console.log('Token value:', token);
         
         // Check if data is FormData
         const isFormData = data instanceof FormData;

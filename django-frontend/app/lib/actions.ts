@@ -20,7 +20,7 @@ export async function handleLogin(userId: string, accessToken:string, refreshTok
     });
 
     cookieStore.set('session_access_token', accessToken, {
-        httpOnly: true,
+        httpOnly: false, // Must be false to allow client-side JavaScript access
         secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 60,
         path: '/'
