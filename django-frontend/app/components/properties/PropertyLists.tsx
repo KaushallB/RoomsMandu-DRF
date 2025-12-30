@@ -17,10 +17,13 @@ export type PropertyType = {
 interface PropertyListProps {
     landlord_id?: string | null;
     userId?: string | null;
+    favourites?: boolean | null;
 }
+
 const PropertyList: React.FC<PropertyListProps> = ({
     landlord_id,
-    userId
+    userId,
+    favourites
 }) =>{
     const [properties, setProperties] = useState<PropertyType[]>([]);
 
@@ -47,6 +50,8 @@ const PropertyList: React.FC<PropertyListProps> = ({
         
         if (landlord_id) {
             url += `?landlord_id=${landlord_id}`
+        }else if(favourites){
+            url += '?is_favourites=true'
         }
 
         const tmpProperties = await apiService.get(url);

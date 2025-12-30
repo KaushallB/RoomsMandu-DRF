@@ -46,7 +46,7 @@ const PropertyDetails = ({params}: {params: Promise<{id: string}>}) => {
                 <Image fill
                     src={property.image_url}
                     className="object-cover w-full h-full"
-                    alt="House1"
+                    alt={property.title}
                 />
             </div>
 

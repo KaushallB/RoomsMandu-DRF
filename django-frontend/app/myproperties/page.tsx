@@ -12,7 +12,9 @@ const MyPropertiespage = async () => {
 
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                 <PropertyList 
-                    landlord_id={userId}/>
+                    landlord_id={userId}
+                    userId={userId}
+                />
             </div>
         </main>
     )
