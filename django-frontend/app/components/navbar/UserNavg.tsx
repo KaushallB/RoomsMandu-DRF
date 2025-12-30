@@ -39,12 +39,20 @@ const UserNav: React.FC<UserNavgProps> = ({
                 <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex-flex-col cursor-pointer">
                     { userId ? (
                         <>
-                            <MenuLink 
-                                label="My Properties"
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    router.push('/myproperties');
-                                }}
+                                <MenuLink 
+                                    label="Inbox"
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        router.push('/inbox');
+                                    }}
+                                />
+
+                                <MenuLink 
+                                    label="My Properties"
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        router.push('/myproperties');
+                                    }}
                                 />
 
                                 <MenuLink 
