@@ -49,4 +49,27 @@ export async function getAccessToken(){
     return accessToken;
 }
 
+export async function getUserName(){
+    const userId = await getUserId();
+    if (!userId) return null;
+    
+    try {
+        const token = (await cookies()).get('session_access_token')?.value;
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/v1/auth/me/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            return data.name || null;
+        }
+    } catch (error) {
+        console.error('Error fetching user name:', error);
+    }
+    
+    return null;
+}
+
 

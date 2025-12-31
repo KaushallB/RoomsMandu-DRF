@@ -96,9 +96,9 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
             {messages.map((message, index) => (
                 <div
                         key={index}
-                        className={`w-[80%] py-4 px-6 rounded-xl text-white ${message.created_by.name == myuser?.name ? 'ml-[20%] bg-blue-600' : 'bg-red-400'}`}
+                        className={`w-[80%] py-4 px-6 rounded-xl text-white ${message.created_by?.name == myuser?.name ? 'ml-[20%] bg-blue-600' : 'bg-red-400'}`}
                     >
-                        <p className="font-bold text-white">{message.created_by.name}</p>
+                        <p className="font-bold text-white">{message.created_by?.name}</p>
                         <p>{message.body}</p>
                     </div>
             ))}

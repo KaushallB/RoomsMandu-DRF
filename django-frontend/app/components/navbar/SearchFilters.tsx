@@ -1,27 +1,37 @@
+'use client';
+
+import useSearchModal from "@/app/hooks/useSearchModal";
+
 const SearchFilter = () =>{
+    const searchModal = useSearchModal();
+
+
+
     return (
-        <div className="h-[48px] lg:h-[64] flex flex-row items-center justify-between rounded-full">
+        <div 
+            onClick={() => searchModal.open('location')}
+            className="h-[48px] lg:h-[64] flex flex-row items-center justify-between rounded-full">
             <div className="hidden lg:block">
                 <div className="flex flex-row items-center justify-between">
                     <div className="cursor-pointer w-[250px] h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-red-500">
-                        <p className="text-xs font-semibold">Where</p>
-                        <p className="text-sm">Wanted Location</p>
+                        <p className="text-xs font-semibold">District</p>
+                        <p className="text-sm">Choose District</p>
                     </div>
 
                     <div className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-red-500">
-                        <p className="text-xs font-semibold">Check In</p>
-                        <p className="text-sm">Add Dates</p>
+                        <p className="text-xs font-semibold">Category</p>
+                        <p className="text-sm">Room Type</p>
                     </div>
 
 
                     <div className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-red-500">
-                        <p className="text-xs font-semibold">Check Out</p>
-                        <p className="text-sm">Add Dates</p>
+                        <p className="text-xs font-semibold">Max Rent</p>
+                        <p className="text-sm">Set Budget</p>
                     </div>
 
                     <div className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-red-500">
-                        <p className="text-xs font-semibold">Who</p>
-                        <p className="text-sm">Add Guests</p>
+                        <p className="text-xs font-semibold">Room Details</p>
+                        <p className="text-sm">Select Size</p>
                     </div>
                 </div>
             </div>

@@ -3,11 +3,12 @@ import Image from 'next/image';
 import SearchFilter from './SearchFilters';
 import UserNav from './UserNavg';
 import AddProperty from './PropertyButton';
-import { getUserId } from '@/app/lib/actions';
+import { getUserId, getUserName } from '@/app/lib/actions';
 
 const Navbar = async () =>{
 
     const userId = await getUserId();
+    const userName = await getUserName();
 
     return (
         <nav className="w-full fixed top-0 left-0 py-6 border-b bg-white z-10">
@@ -26,6 +27,9 @@ const Navbar = async () =>{
                     </div>
                     
                     <div className="flex items-center space-x-6">
+                        {userName && (
+                            <p className="text-sm font-medium text-gray-700">Hi, {userName}</p>
+                        )}
                         <AddProperty 
                             userId={userId}/>
                         
@@ -35,7 +39,7 @@ const Navbar = async () =>{
                 </div>
                     
             </div>
-           
+    
         </nav>
     )
 }
