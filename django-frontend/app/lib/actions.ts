@@ -46,6 +46,11 @@ export async function getUserId(){
 
 export async function getAccessToken(){
     let accessToken = cookieStore.get('session_access_token')?.value;
+
+    if (!accessToken) {
+        accessToken = await handleRefresh();
+    }
+
     return accessToken;
 }
 
@@ -70,6 +75,53 @@ export async function getUserName(){
     }
     
     return null;
+}
+
+export async function handleRefresh(){
+    console.log('Handle Refresh');
+
+    const refreshToken=await getRefreshToken();
+
+    const token = await fetch('http://localhost:8000/api/v1/auth/token/refresh/', {
+        method: 'POST',
+        body: JSON.stringify({
+            refresh: refreshToken
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then((json) => {
+            console.log('Response-Refresh', json)
+
+            if(json.access){
+                    cookieStore.set('session_access_token', json.access, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        maxAge: 60 * 60 * 24 *7,
+                        path: '/'
+                });
+
+                return json.access;
+            }else{
+                resetAuthCookies();
+            }
+        })
+        .catch((error) => {
+            console.log('error', error);
+
+            resetAuthCookies();
+        }) 
+
+        return token;
+}
+
+
+export async function getRefreshToken(){
+    let refreshToken = cookieStore.get('session_refresh_token')?.value;
+    return refreshToken;
 }
 
 
