@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
         hostname: 'localhost',
         port: '8000',
         pathname: '/**'
+      },
+      {
+        protocol: 'http',
+        hostname: '13.71.60.121',
+        port: '1337',
+        pathname: '/**'
       }
     ],
     dangerouslyAllowSVG: true,

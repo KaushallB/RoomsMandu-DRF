@@ -33,7 +33,8 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
     const messageDiv = useRef(null);
     const [realtimeMsg, setrealtimeMsg] = useState<MessageType[]>([]);
 
-    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(`ws://127.0.0.1:8000/ws/${conversationId}/`,{
+    const wsHost = (process.env.NEXT_PUBLIC_WS_HOST || 'ws://127.0.0.1:8002').replace(/\/$/, '');
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(`${wsHost}/ws/${conversationId}/`,{
         share: false,
         shouldReconnect:() => true,
         },
