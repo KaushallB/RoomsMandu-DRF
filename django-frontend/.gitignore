@@ -26,8 +26,31 @@
 
 # debug
 npm-debug.log*
+# env files
+.env*
+*.env
+
+# dependencies
+node_modules/
+
+# build output
+.next/
+out/
+
+# logs
+npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# turborepo/cache
+.turbo/
+.next/cache/
+
+# editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)

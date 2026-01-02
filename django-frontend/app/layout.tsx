@@ -5,6 +5,14 @@ import Navbar from './components/navbar/Navbar';
 import Modal from "./components/modals/Modal";
 import LoginModal from "./components/modals/LoginModal";
 import SignupModal from "./components/modals/SignupModal";
+import AddPropertyModal from "./components/modals/AddPropertModal";
+import SearchModal from "./components/modals/SearchModal";
+import VideoCallModal from "./components/modals/VideoCallModal";
+import CallNotification from "./components/CallNotification";
+import { ToastContainer } from "./components/Toast";
+
+
+
 
 
 const geistSans = Geist({
@@ -32,6 +40,24 @@ export default function RootLayout({
     )
   return (
     <html lang="en">
+      <head>
+        {/* Google Translate Widget */}
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                  pageLanguage: 'en',
+                  includedLanguages: 'en,ne',
+                  layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                  autoDisplay: false
+                }, 'google_translate_element');
+              }
+            `,
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Navbar />
 
@@ -41,6 +67,11 @@ export default function RootLayout({
 
         <LoginModal />
         <SignupModal />
+        <AddPropertyModal />
+        <SearchModal />
+        <VideoCallModal />
+        <CallNotification />
+        <ToastContainer />
 
         {/* <Modal 
           label="Modal Test"
