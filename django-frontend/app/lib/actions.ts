@@ -2,74 +2,68 @@
 
 import { cookies } from "next/headers";
 
-type ServerCookieInit = CookieInit & {
-    httpOnly?: boolean;
-    secure?: boolean;
-    maxAge?: number;
-};
-
 export async function handleLogin(userId: string, accessToken:string, refreshToken:string, userName?: string){
     const cookieStore = await cookies();
-    const baseCookie: Omit<ServerCookieInit, 'name' | 'value'> = {
+    const baseOptions = {
         maxAge: 60 * 60 * 24 * 7,
         path: '/',
         sameSite: 'lax'
     };
 
-    const userIdCookie: ServerCookieInit = {
-        ...baseCookie,
-        name: 'session_userid',
-        value: userId,
-        httpOnly: true
-    };
+    cookieStore.set(
+        'session_userid',
+        userId,
+        {
+            ...baseOptions,
+            httpOnly: true
+        }
+    );
 
-    const refreshCookie: ServerCookieInit = {
-        ...baseCookie,
-        name: 'session_refresh_token',
-        value: refreshToken,
-        httpOnly: true
-    };
+    cookieStore.set(
+        'session_refresh_token',
+        refreshToken,
+        {
+            ...baseOptions,
+            httpOnly: true
+        }
+    );
 
-    const accessCookie: ServerCookieInit = {
-        ...baseCookie,
-        name: 'session_access_token',
-        value: accessToken,
-        httpOnly: false, // Must be false to allow client-side JavaScript access
-        maxAge: 60 * 60
-    };
-
-    cookieStore.set(userIdCookie);
-    cookieStore.set(refreshCookie);
-    cookieStore.set(accessCookie);
+    cookieStore.set(
+        'session_access_token',
+        accessToken,
+        {
+            ...baseOptions,
+            httpOnly: false, // Must be false to allow client-side JavaScript access
+            maxAge: 60 * 60
+        }
+    );
 
     // Store user name
     if (userName) {
-        const usernameCookie: ServerCookieInit = {
-            ...baseCookie,
-            name: 'session_username',
-            value: userName,
-            httpOnly: false
-        };
-
-        cookieStore.set(usernameCookie);
+        cookieStore.set(
+            'session_username',
+            userName,
+            {
+                ...baseOptions,
+                httpOnly: false
+            }
+        );
     }
     
 }
 
 export async function resetAuthCookies(){
     const cookieStore = await cookies();
-    const clearedCookie: ServerCookieInit = {
-        name: '',
-        value: '',
+    const clearedOptions = {
         path: '/',
         maxAge: 0,
-        sameSite: 'lax'
+        sameSite: 'lax' as const
     };
 
-    cookieStore.set({ ...clearedCookie, name: 'session_userid' });
-    cookieStore.set({ ...clearedCookie, name: 'session_access_token' });
-    cookieStore.set({ ...clearedCookie, name: 'session_refresh_token' });
-    cookieStore.set({ ...clearedCookie, name: 'session_username' });
+    cookieStore.set('session_userid', '', clearedOptions);
+    cookieStore.set('session_access_token', '', clearedOptions);
+    cookieStore.set('session_refresh_token', '', clearedOptions);
+    cookieStore.set('session_username', '', clearedOptions);
 }
 
 //Getting Data
@@ -145,16 +139,16 @@ export async function handleRefresh(){
             console.log('Response-Refresh', json)
 
                 if(json.access){
-                    const refreshedCookie: ServerCookieInit = {
-                        name: 'session_access_token',
-                        value: json.access,
-                        httpOnly: true,
-                        maxAge: 60 * 60 * 24 *7,
-                        path: '/',
-                        sameSite: 'lax'
-                    };
-
-                    cookieStore.set(refreshedCookie);
+                    cookieStore.set(
+                        'session_access_token',
+                        json.access,
+                        {
+                            httpOnly: true,
+                            maxAge: 60 * 60 * 24 * 7,
+                            path: '/',
+                            sameSite: 'lax'
+                        }
+                    );
 
                 return json.access;
             }else{
