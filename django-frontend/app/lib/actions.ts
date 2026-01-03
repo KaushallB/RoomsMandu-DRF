@@ -2,49 +2,71 @@
 
 import { cookies } from "next/headers";
 
+type ServerCookieInit = CookieInit & { httpOnly?: boolean };
+
 export async function handleLogin(userId: string, accessToken:string, refreshToken:string, userName?: string){
     const cookieStore = await cookies();
-    
-    cookieStore.set('session_userid', userId, {
-        httpOnly: true,
+    const baseCookie: ServerCookieInit = {
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60 * 24 *7,
-        path: '/'
-    });
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+        sameSite: 'lax'
+    };
 
-    cookieStore.set('session_refresh_token', refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60 * 24 *7,
-        path: '/'
-    });
+    const userIdCookie: ServerCookieInit = {
+        ...baseCookie,
+        name: 'session_userid',
+        value: userId,
+        httpOnly: true
+    };
 
-    cookieStore.set('session_access_token', accessToken, {
+    const refreshCookie: ServerCookieInit = {
+        ...baseCookie,
+        name: 'session_refresh_token',
+        value: refreshToken,
+        httpOnly: true
+    };
+
+    const accessCookie: ServerCookieInit = {
+        ...baseCookie,
+        name: 'session_access_token',
+        value: accessToken,
         httpOnly: false, // Must be false to allow client-side JavaScript access
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60,
-        path: '/'
-    });
+        maxAge: 60 * 60
+    };
+
+    cookieStore.set(userIdCookie);
+    cookieStore.set(refreshCookie);
+    cookieStore.set(accessCookie);
 
     // Store user name
     if (userName) {
-        cookieStore.set('session_username', userName, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/'
-        });
+        const usernameCookie: ServerCookieInit = {
+            ...baseCookie,
+            name: 'session_username',
+            value: userName,
+            httpOnly: false
+        };
+
+        cookieStore.set(usernameCookie);
     }
     
 }
 
 export async function resetAuthCookies(){
     const cookieStore = await cookies();
-    
-    cookieStore.set('session_userid', '');
-    cookieStore.set('session_access_token', '');
-    cookieStore.set('session_refresh_token', '');
-    cookieStore.set('session_username', '');
+    const clearedCookie: ServerCookieInit = {
+        name: '',
+        value: '',
+        path: '/',
+        maxAge: 0,
+        sameSite: 'lax'
+    };
+
+    cookieStore.set({ ...clearedCookie, name: 'session_userid' });
+    cookieStore.set({ ...clearedCookie, name: 'session_access_token' });
+    cookieStore.set({ ...clearedCookie, name: 'session_refresh_token' });
+    cookieStore.set({ ...clearedCookie, name: 'session_username' });
 }
 
 //Getting Data
@@ -101,6 +123,8 @@ export async function getUserName(){
 export async function handleRefresh(){
     console.log('Handle Refresh');
 
+    const cookieStore = await cookies();
+
     const refreshToken=await getRefreshToken();
 
     const token = await fetch('http://localhost:8000/api/v1/auth/token/refresh/', {
@@ -118,14 +142,17 @@ export async function handleRefresh(){
             console.log('Response-Refresh', json)
 
                 if(json.access){
-                    cookieStore.set({
-                    name: 'session_access_token',
-                    value: json.access,
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    maxAge: 60 * 60 * 24 *7,
-                    path: '/'
-                });
+                    const refreshedCookie: ServerCookieInit = {
+                        name: 'session_access_token',
+                        value: json.access,
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        maxAge: 60 * 60 * 24 *7,
+                        path: '/',
+                        sameSite: 'lax'
+                    };
+
+                    cookieStore.set(refreshedCookie);
 
                 return json.access;
             }else{
@@ -143,8 +170,8 @@ export async function handleRefresh(){
 
 
 export async function getRefreshToken(){
-    let refreshToken = cookieStore.get('session_refresh_token')?.value;
-    return refreshToken;
+    const cookieStore = await cookies();
+    return cookieStore.get('session_refresh_token')?.value;
 }
 
 
