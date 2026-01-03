@@ -2,11 +2,11 @@ import {create} from "zustand";
 
 export type SearchQuery = {
     district: string | undefined;
-    category: string;
-    budget: string;
-    rooms: Number;
-    bathroom: Number;
-    kitchen: Number;
+    category: string | null;
+    budget: string | null;
+    rooms: number;
+    bathroom: number;
+    kitchen: number;
 }
 
 
