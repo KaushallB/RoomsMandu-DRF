@@ -117,12 +117,14 @@ export async function handleRefresh(){
         .then((json) => {
             console.log('Response-Refresh', json)
 
-            if(json.access){
-                    cookieStore.set('session_access_token', json.access, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === 'production',
-                        maxAge: 60 * 60 * 24 *7,
-                        path: '/'
+                if(json.access){
+                    cookieStore.set({
+                    name: 'session_access_token',
+                    value: json.access,
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 60 * 60 * 24 *7,
+                    path: '/'
                 });
 
                 return json.access;
