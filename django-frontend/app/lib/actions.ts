@@ -7,7 +7,6 @@ type ServerCookieInit = CookieInit & { httpOnly?: boolean };
 export async function handleLogin(userId: string, accessToken:string, refreshToken:string, userName?: string){
     const cookieStore = await cookies();
     const baseCookie: ServerCookieInit = {
-        secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 60 * 24 * 7,
         path: '/',
         sameSite: 'lax'
@@ -146,7 +145,6 @@ export async function handleRefresh(){
                         name: 'session_access_token',
                         value: json.access,
                         httpOnly: true,
-                        secure: process.env.NODE_ENV === 'production',
                         maxAge: 60 * 60 * 24 *7,
                         path: '/',
                         sameSite: 'lax'
