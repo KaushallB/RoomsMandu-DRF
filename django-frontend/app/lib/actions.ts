@@ -7,7 +7,7 @@ export async function handleLogin(userId: string, accessToken:string, refreshTok
     const baseOptions = {
         maxAge: 60 * 60 * 24 * 7,
         path: '/',
-        sameSite: 'lax'
+        sameSite: 'lax' as const
     };
 
     cookieStore.set(
